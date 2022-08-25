@@ -1,0 +1,25 @@
+{
+  "name": "samantic-social",
+  "description": "Module 18 Challenge",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sam-Antics/samantic-social.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sam-Antics/samantic-social/issues"
+  },
+  "homepage": "https://github.com/Sam-Antics/samantic-social#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "mongoose": "^6.5.3"
+  }
+}
