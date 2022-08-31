@@ -1,10 +1,11 @@
-const { User } = require('../models');
+const { User, Thought } = require('../models');
 
 // /api/users
 const userController = {
   // GET all users
   getAllUser(req, res) {
     User.find({})
+    .populate('thoughts')
     .then(dbUserData => res.json(dbUserData))
     .catch(err => {
       console.log(err);
@@ -15,6 +16,11 @@ const userController = {
   // GET user by ID
   getUserById({ params }, res) {
     User.findOne({ _id: params.id })
+      .populate({
+        path: 'thoughts',
+        select: '-__v'
+      })
+      .select('-__v')
       .then(dbUserData => {
         // If no user is found, send 404
       if (!dbUserData) {

@@ -14,9 +14,26 @@ const UserSchema = new mongoose.Schema({
     // match: /.+\@.+\..+/,
     unique: true
   },
-  thoughts: [],
-  friends: [],
-});
+  thoughts: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Thought'
+    }
+  ],
+  friends: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'users'
+    }
+  ],
+},
+{
+  toJSON: {
+    virtuals: true,
+  },
+  id: false
+}
+);
 
 // create the User model using the UserSchema
 const User = mongoose.model('User', UserSchema);
