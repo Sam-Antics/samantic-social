@@ -1,4 +1,31 @@
 const mongoose = require('mongoose');
+const dateFormat = require('../utils/dateFormat');
+
+// REACTION (SCHEMA ONLY)
+const ReactionSchema = new mongoose.Schema({
+  reactionBody: {
+    type: String,
+    required: true,
+    maxLength: 280
+  },
+  username: {
+    type: String,
+    required: true
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now, 
+    get: (createdAtVal) => dateFormat(createdAtVal) // getter for date format
+  }
+},
+{
+  toJSON: {
+    getters: true
+  },
+  id: false
+}
+)
+
 
 // create the User schema based on mongoose Schema
 const ThoughtSchema = new mongoose.Schema({
@@ -10,7 +37,8 @@ const ThoughtSchema = new mongoose.Schema({
   },
   createdAt: {
     type: Date,
-    default: Date.now // need to format w/ getter
+    default: Date.now,
+    get: (createdAtVal) => dateFormat(createdAtVal) // getter for date format
   },
   username: {
     type: String,
@@ -18,41 +46,27 @@ const ThoughtSchema = new mongoose.Schema({
   },
   reactions: [
     {
-    
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Reaction'
     }
   ]
 },
 {
   toJSON: {
     virtuals: true,
+    getters: true
   },
   id: false
 }
 );
 
 
-// virtual called reactionCount that retrieves the length of the thought's reactions array field on query
+// TODO: virtual called reactionCount that retrieves the length of the thought's reactions array field on query
+
+
 ThoughtSchema.virtual('reactionCount').get(function() {
   return this.reactions.length;
 });
-
-// REACTION (SCHEMA ONLY)
-// reactionId
-// mongoos'es ObjectId data type
-// Default value is set to a new Object Id
-
-// reactionBody
-// String
-// Requied
-// 280 char max
-
-// username
-// string
-// required
-
-// createdAt
-// date
-// set default
 
 // thought model based on the schema
 const Thought = mongoose.model('Thought', ThoughtSchema);

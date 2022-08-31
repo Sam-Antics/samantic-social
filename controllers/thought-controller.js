@@ -46,10 +46,31 @@ const thoughtController = {
            res.status(404).json({ message: 'No user found with this ID.' });
            return;
         }
-          res.json(dbUserData);
-        })
+        res.json(dbUserData);
+      })
       .catch(err => res.json(err));
   },
+
+  // POST to create new reaction
+  createReaction({body}, res) {
+    Reaction.create(body)
+      .then(({ _id }) => {
+        return Thought.findOneAndUpdate(
+          { _id: body.thoughtId },
+          { $push: { reactions: _id } },
+          { new: true }
+        );
+      })
+      .then(dbThoughtData => {
+        if(!dbThoughtData) {
+          res.status(404).json({ message: 'No thought found with this ID' });
+          return;
+        }
+        res.json(dbThoughtData);
+      })
+      .catch(err => res.json(err));
+  },
+
     // PUT to update a thought by its ID
     updateThought({ params, body }, res) {
       Thought.findOneAndUpdate({ _id: params.id }, body, { new: true })

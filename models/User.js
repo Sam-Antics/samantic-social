@@ -11,7 +11,7 @@ const UserSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-    match: /.+\@.+\..+/,
+    match: /.+\@.+\..+/, // verify proper email format
     unique: true
   },
   thoughts: [
@@ -23,7 +23,7 @@ const UserSchema = new mongoose.Schema({
   friends: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'users'
+      ref: 'Friend'
     }
   ],
 },
