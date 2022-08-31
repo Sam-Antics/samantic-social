@@ -30,7 +30,7 @@ const thoughtController = {
 
   // POST to create new thought
   // (and push the created thought's ID to the associated user's throughts array field)
-  addThought({body}, res) {
+  createThought({body}, res) {
     console.log(body);
     Thought.create(body)
     //   .catch(err => res.status(400).json(err));

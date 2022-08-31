@@ -1,11 +1,14 @@
-const { User } = require('../models');
+const { User, Thought } = require('../models');
 
 // /api/users
 const userController = {
   // GET all users
   getAllUser(req, res) {
     User.find({})
-    .populate('thoughts')
+    .populate({
+    path: 'thoughts',
+    select: '-__v'
+  })
     .then(dbUserData => res.json(dbUserData))
     .catch(err => {
       console.log(err);
@@ -65,12 +68,20 @@ const userController = {
         }
         res.json(dbUserData);
       })
+      // .then(user.remove())
       .catch(err => res.status(400).json(err));
   }
 
-
-  // **bonus** remove user's associated thoughts when deleted
 };
+
+// **bonus** remove user's associated thoughts when deleted
+// middleware to remove user's comments when user gets deleted
+// const userSchema.pre('remove', function(next) {
+//   Task.remove({ user_id: this._id }).exec();
+//   next()
+// })
+
+
 
 // /api/users/:userId/friends/:friendId
 // POST to add a new friend to a user's friend list
