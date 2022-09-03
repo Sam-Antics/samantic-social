@@ -1,6 +1,5 @@
 const { User, Thought } = require('../models');
 
-// /api/users
 const userController = {
   // GET all users
   getAllUser(req, res) {
@@ -44,6 +43,23 @@ const userController = {
       .then(dbUserData => res.json(dbUserData))
       .catch(err => res.status(400).json(err));
   },
+
+  // Add friend to the friends array
+  addFriend({ params }, res) {
+    User.findOneAndUpdate(
+      { _id: params.userId },
+      { $push: { friends: params.friendId } },
+      { new: true }
+    )
+    .then(dbUserData => {
+      if (!dbUserData) {
+        res.status(404).json({ message: 'No user found with this ID.' });
+        return;
+      }
+      res.json(dbUserData);
+    })
+    .catch(err => res.json(err));
+  },
   
   // PUT to update user by ID
   updateUser({ params, body }, res) {
@@ -56,6 +72,17 @@ const userController = {
         res.json(dbUserData);
       })
       .catch(err => res.status(400).json(err));
+  },
+
+  // DELETE friend from User's friends array
+  deleteFriend({ params }, res) {
+    User.findOneAndUpdate(
+      { _id: params.userId },
+      { $pull: { friends: params.friendId  } },
+      { new: true }
+    )
+    .then(dbUserData => res.json(dbUserData))
+    .catch(err => res.json(err));
   },
   
   // DELETE user by ID
@@ -78,15 +105,6 @@ const userController = {
 // use an array method to delete on that (deleteMany, probably)
 // $in operator -- figure out what this does to arrays. This is a possibility for the bonus' solution
 };
-
-
-
-
-
-// /api/users/:userId/friends/:friendId
-// POST to add a new friend to a user's friend list
-
-// DELETE to remove a friend from a user's friend list
 
 
 module.exports = userController;

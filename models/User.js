@@ -20,12 +20,7 @@ const UserSchema = new mongoose.Schema({
         ref: 'Thought'
       }
     ],
-    friends: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Friend'
-      }
-    ],
+    friends: [],
   },
   {
     toJSON: {
@@ -35,8 +30,9 @@ const UserSchema = new mongoose.Schema({
   }
 );
 
-UserSchema.virtual('thoughtCount').get(function() {
-  return this.comments.reduce((total, comment) => total + comment.replies.length + 1, 0);
+// friend count virtual
+UserSchema.virtual('friendCount').get(function() {
+  return this.friends.length;
 });
 
 // create the User model using the UserSchema
