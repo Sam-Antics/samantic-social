@@ -33,7 +33,6 @@ const thoughtController = {
   createThought({body}, res) {
     console.log(body);
     Thought.create(body)
-    //   .catch(err => res.status(400).json(err));
       .then(({ _id }) => {
         return User.findOneAndUpdate(
             { _id: body.userId },
@@ -52,16 +51,13 @@ const thoughtController = {
   },
 
   // POST to create new reaction
-  createReaction({body}, res) {
-    Reaction.create(body)
-      .then(({ _id }) => {
-        return Thought.findOneAndUpdate(
-          { _id: body.thoughtId },
-          { $push: { reactions: _id } },
-          { new: true }
-        );
-      })
-      .then(dbThoughtData => {
+  createReaction({params, body}, res) {
+    Thought.findOneAndUpdate(
+      { _id: params.thoughtId },
+      { $push: { reactions: body } },
+      { new: true }
+    )
+   .then(dbThoughtData => {
         if(!dbThoughtData) {
           res.status(404).json({ message: 'No thought found with this ID' });
           return;
@@ -73,7 +69,8 @@ const thoughtController = {
 
     // PUT to update a thought by its ID
     updateThought({ params, body }, res) {
-      Thought.findOneAndUpdate({ _id: params.id }, body, { new: true })
+      Thought.findOneAndUpdate(
+        { _id: params.id }, body, { new: true })
         .then(dbThoughtData => {
           if (!dbThoughtData) {
             res.status(404).json({ message: 'No thought found with this ID.' });
@@ -83,6 +80,17 @@ const thoughtController = {
         })
         .catch(err => res.status(400).json(err));
     },
+
+  // Update Thought by deleting its reaction
+  deleteReaction({ params }, res) {
+    Thought.findOneAndUpdate(
+      { _id: params.thoughtId },
+      { $pull: { reactions: { reactId: params.reactId } } },
+      { new: true }
+    )
+    .then(dbThoughtData => res.json(dbThoughtData))
+    .catch(err => res.json(err));
+  },
 
   // DELETE to remove a thought by its ID
   deleteThought({ params }, res) {
@@ -95,7 +103,7 @@ const thoughtController = {
         res.json(dbThoughtData);
       })
       .catch(err => res.json(err));
-  }
+  },
 };
 
 // /api/thoughts/:thoughtId/reactions
