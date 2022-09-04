@@ -94,6 +94,7 @@ const userController = {
           return;
         }
         res.json(dbUserData);
+        // firing the middleware (pre hook) to delete the thoughts associated with this user
         dbUserData.remove();
       })
       .catch(err => res.status(400).json(err));

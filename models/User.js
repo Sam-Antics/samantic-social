@@ -38,6 +38,7 @@ UserSchema.virtual('friendCount').get(function() {
 
 
 // **bonus** remove user's associated thoughts when deleted
+// middleware that fires at the end of the User delete
 UserSchema.pre('remove', async function(next) {
   await Thought.remove({ _id: { $in: this.thoughts } })
 

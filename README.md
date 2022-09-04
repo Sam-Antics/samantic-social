@@ -32,7 +32,7 @@ THEN I am able to successfully create and delete reactions to thoughts and add a
 ## Usage
 As there is no front end built for this API, a demonstration of the functionality is provided using Insomnia.
 ### Deployed Application Demonstration
-![Deployed application](#)
+![Deployed application](./assets/Samantic-social%20demo.mp4)
 
 ## Built With
 * JavaScript
