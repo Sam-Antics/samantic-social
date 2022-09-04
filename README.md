@@ -1,5 +1,5 @@
 # samantic-social
-Module 18 Challenge
+Social Network API Challenge
 
 ## Table of Contents
 1. [Project Description](#project-description)
@@ -30,6 +30,7 @@ WHEN I test API POST and DELETE routes in Insomnia
 THEN I am able to successfully create and delete reactions to thoughts and add and remove friends to a user’s friend list
 ```
 ## Usage
+As there is no front end built for this API, a demonstration of the functionality is provided using Insomnia.
 ### Deployed Application Demonstration
 ![Deployed application](#)
 

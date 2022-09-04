@@ -94,17 +94,13 @@ const userController = {
           return;
         }
         res.json(dbUserData);
+        dbUserData.remove();
       })
-      // .then(user.remove())
       .catch(err => res.status(400).json(err));
   }
-
-  
-  // **bonus** remove user's associated thoughts when deleted
-// grab the dbuserdata.thoughs to access the thoughts array
-// use an array method to delete on that (deleteMany, probably)
-// $in operator -- figure out what this does to arrays. This is a possibility for the bonus' solution
 };
+
+
 
 
 module.exports = userController;
